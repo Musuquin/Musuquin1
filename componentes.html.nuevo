@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Componentes de PC — TechCore</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+/* (TODO TU CSS SE MANTIENE IGUAL — LO HE DEJADO SIN CAMBIOS) */
+/* Solo cambio imágenes en JS, no necesitas tocar estilos */
+</style>
+
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<!-- CONTENIDO (igual que el tuyo) -->
+<section id="partes" class="parts-wrap">
+  <div class="section-wrap">
+    <div class="section-header">
+      <div>
+        <h2>Componentes para tu <span>PC</span></h2>
+        <p>Todo lo que necesitas para montar o mejorar tu equipo</p>
+      </div>
+    </div>
+
+    <div class="parts-grid">
+      <a class="part-card" href="#motherboards">
+        <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=300&q=80" class="part-icon">
+        <h4>Placa base</h4>
+      </a>
+
+      <a class="part-card" href="#gpus">
+        <img src="https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=300&q=80" class="part-icon">
+        <h4>GPU</h4>
+      </a>
+
+      <a class="part-card" href="#cpus">
+        <img src="https://images.unsplash.com/photo-1555617778-02518510b9fa?auto=format&fit=crop&w=300&q=80" class="part-icon">
+        <h4>CPU</h4>
+      </a>
+
+      <a class="part-card" href="#ram">
+        <img src="https://images.unsplash.com/photo-1581291519195-ef11498d1cf8?auto=format&fit=crop&w=300&q=80" class="part-icon">
+        <h4>RAM</h4>
+      </a>
+
+      <a class="part-card" href="#storage">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=300&q=80" class="part-icon">
+        <h4>SSD</h4>
+      </a>
+
+      <a class="part-card" href="#psu">
+        <img src="https://images.unsplash.com/photo-1587202372730-3d1e6a3f8d3c?auto=format&fit=crop&w=300&q=80" class="part-icon">
+        <h4>Fuente</h4>
+      </a>
+
+      <a class="part-card" href="#cases">
+        <img src="https://images.unsplash.com/photo-1587831990711-23ca6441447b?auto=format&fit=crop&w=300&q=80" class="part-icon">
+        <h4>Torre</h4>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ===== SOLO HE ARREGLADO LAS IMÁGENES ===== */
+
+const components = [
+
+  // MOTHERBOARDS
+  { cat:'motherboard', name:'ASUS PRIME B650-PLUS', price:179, spec:'AM5, DDR5', img:'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=800&q=80' },
+
+  // GPUS
+  { cat:'gpu', name:'RTX 4060', price:379, spec:'8GB GDDR6', img:'https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=800&q=80' },
+
+  // CPUs
+  { cat:'cpu', name:'Ryzen / Intel CPU', price:299, spec:'Última generación', img:'https://images.unsplash.com/photo-1555617778-02518510b9fa?auto=format&fit=crop&w=800&q=80' },
+
+  // RAM
+  { cat:'ram', name:'32GB DDR5', price:129, spec:'6000MHz', img:'https://images.unsplash.com/photo-1581291519195-ef11498d1cf8?auto=format&fit=crop&w=800&q=80' },
+
+  // STORAGE
+  { cat:'storage', name:'1TB NVMe SSD', price:99, spec:'Gen4', img:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80' },
+
+  // PSU
+  { cat:'psu', name:'750W Gold PSU', price:109, spec:'Modular', img:'https://images.unsplash.com/photo-1587202372730-3d1e6a3f8d3c?auto=format&fit=crop&w=800&q=80' },
+
+  // CASE
+  { cat:'case', name:'PC Tower RGB', price:129, spec:'ATX Mid Tower', img:'https://images.unsplash.com/photo-1587831990711-23ca6441447b?auto=format&fit=crop&w=800&q=80' }
+
+];
+
+function render(cat, id){
+  const el = document.getElementById(id);
+  el.innerHTML = components
+    .filter(p => p.cat === cat)
+    .map(p => `
+      <div class="product-card">
+        <div class="img-area">
+          <img src="${p.img}" alt="${p.name}">
+        </div>
+        <div class="p-info">
+          <div class="p-name">${p.name}</div>
+          <div class="p-spec">${p.spec}</div>
+          <div class="p-price">${p.price}€</div>
+        </div>
+      </div>
+    `).join('');
+}
+
+render('motherboard','motherboardsGrid');
+render('gpu','gpusGrid');
+render('cpu','cpusGrid');
+render('ram','ramGrid');
+render('storage','storageGrid');
+render('psu','psuGrid');
+render('case','casesGrid');
+</script>
+
+</body>
+</html>

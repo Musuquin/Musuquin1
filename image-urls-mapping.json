@@ -1,0 +1,50 @@
+{
+  "LAPTOPS": {
+    "asus-rog-zephyrus": "https://dlcdnwebimgs.asus.com/gain/09ce3a1c-2fde-4a05-afcf-4ff1e94c7a1a/w640",
+    "macbook-pro-m4": "https://www.apple.com/in/macbook-pro/images/meta/macbook-pro-og__fpga2y5g6s2q_large.jpg",
+    "lenovo-legion-pro": "https://psref.lenovo.com/View2/ImageThumbnail?id=da5f7c2c-0fd4-40c5-a9f4-2bd36d01bde0"
+  },
+  "DESKTOPS": {
+    "asus-rog-strix": "https://www.asus.com/support/download-center/",
+    "msi-codex": "https://www.msi.com/Landing/imagine-with-msi"
+  },
+  "MONITORS": {
+    "samsung-odyssey": "https://images.samsung.com/us/computing/monitors/gaming/ls49bg950nuxen/gallery/01-DW55B-Gallery-400.jpg",
+    "lg-ultragear": "https://gscs.lnwfile.com/_/gsc/gscprod/public/gsc-managed-dam/Gaming/Monitors/27GR95QE/lg-27gr95qe-gallery1.jpg"
+  },
+  "AUDIO_HEADSETS": {
+    "asus-rog-delta": "https://www.asus.com/support/download-center/",
+    "steelseries-arctis": "https://steelseries.com/gaming-headsets/arctis-nova-pro"
+  },
+  "AUDIO_MICROPHONES": {
+    "shure-mv7": "https://pubs.shure.com/images/product_document/inline/en-US/14ccc07d-e5f8-4f00-aa3b-3cc04b49dcdf/dac8ded6-62e7-4e8c-a2af-43df3597af32.jpg"
+  },
+  "GPU": {
+    "nvidia-rtx5090": "https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/ada/rtx-5090/geforce-rtx-5090-og-1200x630.jpg",
+    "amd-radeon-rx7600": "https://www.amd.com/content/dam/amdcom/images/product/graphics/radeon-rx-7600/radeon-rx-7600-hero.jpg",
+    "nvidia-rtx4080": "https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/ada/rtx-4080/geforce-rtx-4080-og-1200x630.jpg"
+  },
+  "CPU": {
+    "amd-ryzen-5": "https://www.amd.com/content/dam/amdcom/images/product/processors/ryzen/ryzen-5-7600x/hero-image.jpg",
+    "intel-core-i7": "https://ark.intel.com/content/dam/ark/images/product/data/ark-badge-14th-gen.jpg"
+  },
+  "MEMORY": {
+    "ddr4-generic": "https://images.unsplash.com/photo-1581291519195-ef11498d1cf8?auto=format&fit=crop&w=500&q=80",
+    "ddr5-generic": "https://images.unsplash.com/photo-1581291519195-ef11498d1cf8?auto=format&fit=crop&w=500&q=80"
+  },
+  "STORAGE": {
+    "nvme-ssd": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=500&q=80"
+  },
+  "PSU": {
+    "corsair-rm850": "https://www.corsair.com/ww/en/p/psu/cp-9020196-na/hxi-series-hxi850-80-plus-platinum-modular-atx-power-supply",
+    "evga-850": "https://www.evga.com/products/product.aspx?pn=220-GP-0850-X1"
+  },
+  "CASE": {
+    "corsair-4000d": "https://www.corsair.com/ww/en/p/cases/cc-9011198-ww/4000d-airflow-atx-mid-tower-case-black",
+    "nzxt-h510": "https://images-na.ssl-images-amazon.com/images/I/71D5+D0qYiL._AC_SX425_.jpg"
+  },
+  "MOTHERBOARD": {
+    "asus-prime-b650": "https://www.asus.com/support/download-center/",
+    "msi-x670e": "https://images.msi.com/images/product/pro/mag_x870e_tomahawk_wifi.jpg"
+  }
+}

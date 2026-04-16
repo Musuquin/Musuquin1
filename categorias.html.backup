@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechCore</title>
+
+<!-- FIX ANTI-FLASH (IMPORTANTE) -->
+<style>
+  html {
+    background: #080810;
+  }
+
+  body {
+    margin: 0;
+    background: #080810 !important;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  body.loaded {
+    opacity: 1;
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --black: #080810;
+    --black2: #0f0f1a;
+    --black3: #16162b;
+    --purple: #7c3aed;
+    --purple-light: #9d5af0;
+    --white: #f4f4ff;
+    --white-dim: #c8c8e0;
+    --gray: #2a2a3f;
+    --radius: 12px;
+    --shadow: 0 0 40px rgba(124,58,237,0.15);
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  body {
+    color: var(--white);
+    font-family: var(--font-body);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    padding: 40px;
+  }
+
+  .product-card {
+    background: var(--black2);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: 0.25s;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--purple);
+    box-shadow: var(--shadow);
+  }
+
+  .img-area {
+    height: 180px;
+    background: var(--black3);
+  }
+
+  .img-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .p-info {
+    padding: 14px;
+  }
+
+  .p-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .p-price {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .add {
+    margin-top: 10px;
+    background: var(--purple);
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="products-grid" id="grid"></div>
+
+<script>
+/* FIX ANTI FLASH */
+window.addEventListener("load", () => {
+  document.body.classList.add("loaded");
+});
+
+/* IMÁGENES FIABLES */
+function getImage(cat) {
+  const img = {
+    laptop: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    desktop: "https://images.unsplash.com/photo-1587202372775-98927d7203a5?auto=format&fit=crop&w=800&q=80",
+    monitor: "https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?auto=format&fit=crop&w=800&q=80",
+    audio: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80"
+  };
+  return img[cat] || img.laptop;
+}
+
+/* PRODUCTOS DEMO */
+const products = [
+  { name: "Gaming Laptop RTX", cat: "laptop", price: 1499 },
+  { name: "PC Torre Ryzen", cat: "desktop", price: 1199 },
+  { name: "Monitor 144Hz", cat: "monitor", price: 299 },
+  { name: "Auriculares Pro", cat: "audio", price: 199 }
+];
+
+/* RENDER */
+function render() {
+  const grid = document.getElementById("grid");
+
+  grid.innerHTML = products.map(p => `
+    <div class="product-card">
+      <div class="img-area">
+        <img src="${getImage(p.cat)}"
+             onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'">
+      </div>
+      <div class="p-info">
+        <div class="p-name">${p.name}</div>
+        <div class="p-price">${p.price}€</div>
+        <button class="add">Añadir</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+render();
+</script>
+
+</body>
+</html>

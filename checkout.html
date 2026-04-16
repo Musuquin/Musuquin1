@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — TechCore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="header.css">
+<style>
+  :root {
+    --black: #080810;
+    --black2: #0f0f1a;
+    --black3: #16162b;
+    --purple: #7c3aed;
+    --purple-light: #9d5af0;
+    --purple-glow: #a855f7;
+    --purple-dim: #4c1d95;
+    --white: #f4f4ff;
+    --white-dim: #c8c8e0;
+    --gray: #2a2a3f;
+    --gray2: #1e1e32;
+    --accent: #e040fb;
+    --green: #10b981;
+    --red: #ef4444;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 0 40px rgba(124,58,237,0.15);
+    --shadow-sm: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--black2); }
+  ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ─── PROMO BAR ─── */
+  .promo-bar {
+    background: linear-gradient(90deg, var(--purple-dim), var(--purple), var(--purple-dim));
+    text-align: center;
+    padding: 10px 20px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .promo-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    animation: shine 3s infinite;
+  }
+  @keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .promo-bar span { color: #e9d5ff; font-weight: 600; }
+
+  /* ─── CHECKOUT ─── */
+  .checkout-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .checkout-main { }
+  .checkout-sidebar {
+    background: var(--black2);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius);
+    padding: 32px;
+    position: sticky;
+    top: 100px;
+  }
+
+  .checkout-header {
+    margin-bottom: 40px;
+  }
+  .checkout-header h1 {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .checkout-header p { color: var(--white-dim); }
+
+  .checkout-section {
+    background: var(--black2);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--gray);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-icon {
+    width: 24px; height: 24px;
+    background: var(--purple);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .section-body { padding: 24px; }
+
+  /* CONTACT INFO */
+  .contact-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .contact-form .form-group {
+    margin-bottom: 16px;
+  }
+  .contact-form label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--white);
+  }
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius-sm);
+    color: var(--white);
+    padding: 12px 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus { border-color: var(--purple); }
+  .contact-form textarea { resize: vertical; min-height: 80px; }
+
+  /* SHIPPING */
+  .shipping-options {
+    display: grid;
+    gap: 12px;
+  }
+  .shipping-option {
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius);
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .shipping-option:hover { border-color: var(--purple); }
+  .shipping-option.active {
+    border-color: var(--purple);
+    background: rgba(124,58,237,0.08);
+  }
+  .shipping-radio {
+    accent-color: var(--purple);
+    width: 16px; height: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .shipping-info h4 {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .shipping-info p { font-size: 12px; color: var(--white-dim); }
+  .shipping-price {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--purple-glow);
+  }
+
+  /* PAYMENT */
+  .payment-methods {
+    display: grid;
+    gap: 12px;
+  }
+  .payment-method {
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius);
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .payment-method:hover { border-color: var(--purple); }
+  .payment-method.active {
+    border-color: var(--purple);
+    background: rgba(124,58,237,0.08);
+  }
+  .payment-radio {
+    accent-color: var(--purple);
+    width: 16px; height: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .payment-info h4 {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .payment-info p { font-size: 12px; color: var(--white-dim); }
+
+  .payment-details {
+    margin-top: 16px;
+    display: none;
+  }
+  .payment-details.active { display: block; }
+
+  .card-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .card-form .form-group {
+    margin-bottom: 16px;
+  }
+  .card-form label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--white);
+  }
+  .card-form input {
+    width: 100%;
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius-sm);
+    color: var(--white);
+    padding: 12px 16px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .card-form input:focus { border-color: var(--purple); }
+
+  .bizum-form .form-group {
+    margin-bottom: 16px;
+  }
+  .bizum-form label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--white);
+  }
+  .bizum-form input {
+    width: 100%;
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius-sm);
+    color: var(--white);
+    padding: 12px 16px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .bizum-form input:focus { border-color: var(--purple); }
+
+  /* SIDEBAR */
+  .sidebar-header {
+    margin-bottom: 24px;
+  }
+  .sidebar-header h3 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+
+  .order-items { margin-bottom: 24px; }
+  .order-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    align-items: flex-start;
+  }
+  .order-item:last-child { border-bottom: none; }
+  .order-item .item-icon {
+    width: 48px; height: 48px;
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .order-item .item-info { flex: 1; }
+  .order-item .item-name {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .order-item .item-price {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--purple-glow);
+  }
+
+  .order-summary {
+    border-top: 1px solid var(--gray);
+    padding-top: 16px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .summary-row.subtotal { color: var(--white-dim); }
+  .summary-row.total {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0;
+  }
+  .summary-row .amount {
+    font-family: var(--font-mono);
+    color: var(--white);
+  }
+  .summary-row.total .amount {
+    font-size: 20px;
+    color: var(--purple-glow);
+  }
+
+  .checkout-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    border: none;
+    color: white;
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 24px;
+  }
+  .checkout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(124,58,237,0.5);
+  }
+  .checkout-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .checkout-footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--white-dim);
+  }
+  .checkout-footer a { color: var(--purple-glow); text-decoration: none; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--black2);
+    border-top: 1px solid var(--gray);
+    padding: 60px 40px 30px;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 48px;
+  }
+  .footer-brand .footer-logo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-logo .logo-core { color: var(--purple-glow); }
+  .footer-brand p { font-size: 13px; color: var(--white-dim); max-width: 280px; line-height: 1.7; }
+  .footer-col h4 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    margin-bottom: 16px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a {
+    color: var(--white-dim);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--purple-glow); }
+  .footer-bottom {
+    border-top: 1px solid var(--gray);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-bottom p { font-size: 12px; color: var(--white-dim); }
+  .footer-badges {
+    display: flex;
+    gap: 8px;
+  }
+  .footer-badge {
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--white-dim);
+    font-family: var(--font-mono);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1100px) {
+    .checkout-wrap { grid-template-columns: 1fr; gap: 40px; }
+    .checkout-sidebar { position: static; order: -1; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 860px) {
+    nav { padding: 0 20px; gap: 12px; }
+    .nav-links { display: none; }
+    .checkout-wrap { padding: 40px 20px; }
+    .footer-top { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  @media (max-width: 480px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* ─── UTILITY ─── */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    border-radius: 100px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--white-dim);
+  }
+
+  /* Mobile nav toggle */
+  .mobile-menu-btn {
+    display: none;
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    color: var(--white);
+    width: 42px; height: 42px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  @media (max-width: 860px) { .mobile-menu-btn { display: flex; } }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--black2);
+    border: 1px solid var(--purple);
+    border-radius: var(--radius);
+    padding: 12px 20px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--white);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast .toast-icon { font-size: 18px; }
+</style>
+</head>
+<body>
+
+<div id="site-header"></div>
+
+
+
+<!-- CHECKOUT -->
+<section class="checkout-wrap">
+  <div class="checkout-main">
+    <div class="checkout-header">
+      <h1>Finalizar compra</h1>
+      <p>Completa tu pedido y elige tu método de pago</p>
+    </div>
+
+    <!-- CONTACT INFO -->
+    <div class="checkout-section">
+      <div class="section-header">
+        <div class="section-icon">👤</div>
+        <div class="section-title">Información de contacto</div>
+      </div>
+      <div class="section-body">
+        <form class="contact-form" id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">Nombre</label>
+              <input type="text" id="firstName" placeholder="Tu nombre" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Apellidos</label>
+              <input type="text" id="lastName" placeholder="Tus apellidos" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Correo electrónico</label>
+              <input type="email" id="email" placeholder="tu@email.com" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Teléfono</label>
+              <input type="tel" id="phone" placeholder="+34 600 000 000" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="address">Dirección de envío</label>
+            <textarea id="address" placeholder="Calle, número, piso, código postal, ciudad, provincia" required></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- SHIPPING -->
+    <div class="checkout-section">
+      <div class="section-header">
+        <div class="section-icon">📦</div>
+        <div class="section-title">Método de envío</div>
+      </div>
+      <div class="section-body">
+        <div class="shipping-options">
+          <label class="shipping-option active" onclick="selectShipping('standard')">
+            <input type="radio" name="shipping" value="standard" class="shipping-radio" checked>
+            <div class="shipping-info">
+              <h4>Envío estándar</h4>
+              <p>3-5 días laborables</p>
+            </div>
+            <div class="shipping-price">Gratis</div>
+          </label>
+          <label class="shipping-option" onclick="selectShipping('express')">
+            <input type="radio" name="shipping" value="express" class="shipping-radio">
+            <div class="shipping-info">
+              <h4>Envío express</h4>
+              <p>1-2 días laborables</p>
+            </div>
+            <div class="shipping-price">+15€</div>
+          </label>
+          <label class="shipping-option" onclick="selectShipping('pickup')">
+            <input type="radio" name="shipping" value="pickup" class="shipping-radio">
+            <div class="shipping-info">
+              <h4>Recogida en tienda</h4>
+              <p>Disponible en 24h</p>
+            </div>
+            <div class="shipping-price">Gratis</div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="checkout-section">
+      <div class="section-header">
+        <div class="section-icon">💳</div>
+        <div class="section-title">Método de pago</div>
+      </div>
+      <div class="section-body">
+        <div class="payment-methods">
+          <label class="payment-method active" onclick="selectPayment('card')">
+            <input type="radio" name="payment" value="card" class="payment-radio" checked>
+            <div class="payment-info">
+              <h4>Tarjeta de crédito/débito</h4>
+              <p>Visa, Mastercard, American Express</p>
+            </div>
+          </label>
+          <label class="payment-method" onclick="selectPayment('bizum')">
+            <input type="radio" name="payment" value="bizum" class="payment-radio">
+            <div class="payment-info">
+              <h4>Bizum</h4>
+              <p>Pago instantáneo con tu móvil</p>
+            </div>
+          </label>
+          <label class="payment-method" onclick="selectPayment('paypal')">
+            <input type="radio" name="payment" value="paypal" class="payment-radio">
+            <div class="payment-info">
+              <h4>PayPal</h4>
+              <p>Pago seguro con PayPal</p>
+            </div>
+          </label>
+        </div>
+
+        <!-- CARD FORM -->
+        <div class="payment-details active" id="cardDetails">
+          <form class="card-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cardNumber">Número de tarjeta</label>
+                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+              </div>
+              <div class="form-group">
+                <label for="cardExpiry">Fecha de caducidad</label>
+                <input type="text" id="cardExpiry" placeholder="MM/AA" maxlength="5">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cardName">Nombre en la tarjeta</label>
+                <input type="text" id="cardName" placeholder="Como aparece en la tarjeta">
+              </div>
+              <div class="form-group">
+                <label for="cardCVV">CVV</label>
+                <input type="text" id="cardCVV" placeholder="123" maxlength="4">
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- BIZUM FORM -->
+        <div class="payment-details" id="bizumDetails">
+          <form class="bizum-form">
+            <div class="form-group">
+              <label for="bizumPhone">Número de teléfono</label>
+              <input type="tel" id="bizumPhone" placeholder="+34 600 000 000">
+            </div>
+            <p style="font-size:12px;color:var(--white-dim);margin-top:8px">
+              Recibirás una notificación en tu app de banco para confirmar el pago.
+            </p>
+          </form>
+        </div>
+
+        <!-- PAYPAL FORM -->
+        <div class="payment-details" id="paypalDetails">
+          <p style="font-size:14px;color:var(--white-dim);margin-bottom:16px">
+            Serás redirigido a PayPal para completar el pago de forma segura.
+          </p>
+          <button class="checkout-btn" onclick="processPayPal()" style="margin:0;width:auto;padding:12px 24px;">
+            Continuar con PayPal
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="checkout-sidebar">
+    <div class="sidebar-header">
+      <h3>Resumen del pedido</h3>
+    </div>
+
+    <div class="order-items" id="orderItems">
+      <!-- Items will be populated by JS -->
+    </div>
+
+    <div class="order-summary">
+      <div class="summary-row subtotal">
+        <span>Subtotal</span>
+        <span class="amount" id="subtotal">0€</span>
+      </div>
+      <div class="summary-row subtotal">
+        <span>Envío</span>
+        <span class="amount" id="shippingCost">0€</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total</span>
+        <span class="amount" id="total">0€</span>
+      </div>
+    </div>
+
+    <button class="checkout-btn" id="completeOrderBtn" onclick="completeOrder()">
+      Completar pedido
+    </button>
+
+    <div class="checkout-footer">
+      🔒 Pago seguro · SSL encriptado<br>
+      <a href="#">Política de privacidad</a> · <a href="#">Términos de servicio</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span style="background:var(--purple);width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px">⚙</span>
+          Tech<span class="logo-core">Core</span>
+        </div>
+        <p>Especialistas en hardware y tecnología premium. Tu tienda de confianza para montar, mejorar o actualizar tu setup.</p>
+        <div style="display:flex;gap:10px;margin-top:20px">
+          <span class="chip">🐦 Twitter</span>
+          <span class="chip">📘 Facebook</span>
+          <span class="chip">📷 Instagram</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Tienda</h4>
+        <ul>
+          <li><a href="categorias.html">Portátiles</a></li>
+          <li><a href="categorias.html">Torres de escritorio</a></li>
+          <li><a href="categorias.html">Monitores</a></li>
+          <li><a href="categorias.html">Audio</a></li>
+          <li><a href="componentes.html">Componentes</a></li>
+          <li><a href="categorias.html">Periféricos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#">Sobre TechCore</a></li>
+          <li><a href="#">Carreras</a></li>
+          <li><a href="#">Blog técnico</a></li>
+          <li><a href="#">Prensa</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Soporte</h4>
+        <ul>
+          <li><a href="#">Centro de ayuda</a></li>
+          <li><a href="#">Estado del pedido</a></li>
+          <li><a href="#">Devoluciones</a></li>
+          <li><a href="#">Garantía</a></li>
+          <li><a href="#">Política de privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 TechCore. Todos los derechos reservados. Empresa ficticia creada como demo.</p>
+      <div class="footer-badges">
+        <span class="footer-badge">💳 Visa</span>
+        <span class="footer-badge">💳 Mastercard</span>
+        <span class="footer-badge">🅿 PayPal</span>
+        <span class="footer-badge">🍎 Apple Pay</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span id="toastMsg">Pedido completado</span>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   CHECKOUT LOGIC
+═══════════════════════════════════════════════ */
+let cart = JSON.parse(localStorage.getItem('techcore_cart') || '[]');
+let shippingMethod = 'standard';
+let paymentMethod = 'card';
+
+function loadCart() {
+  const container = document.getElementById('orderItems');
+  const subtotalEl = document.getElementById('subtotal');
+  const shippingEl = document.getElementById('shippingCost');
+  const totalEl = document.getElementById('total');
+
+  if (cart.length === 0) {
+    container.innerHTML = '<p style="text-align:center;color:var(--white-dim)">Tu carrito está vacío</p>';
+    subtotalEl.textContent = '0€';
+    shippingEl.textContent = '0€';
+    totalEl.textContent = '0€';
+    return;
+  }
+
+  container.innerHTML = cart.map(item => `
+    <div class="order-item">
+      <div class="item-icon">${item.icon}</div>
+      <div class="item-info">
+        <div class="item-name">${item.name}</div>
+        <div class="item-price">${(item.price * item.qty).toLocaleString('es-ES')}€</div>
+      </div>
+    </div>
+  `).join('');
+
+  updateTotals();
+}
+
+function updateTotals() {
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const shippingCost = shippingMethod === 'express' ? 15 : 0;
+  const total = subtotal + shippingCost;
+
+  document.getElementById('subtotal').textContent = subtotal.toLocaleString('es-ES') + '€';
+  document.getElementById('shippingCost').textContent = shippingCost.toLocaleString('es-ES') + '€';
+  document.getElementById('total').textContent = total.toLocaleString('es-ES') + '€';
+}
+
+function selectShipping(method) {
+  shippingMethod = method;
+  document.querySelectorAll('.shipping-option').forEach(opt => opt.classList.remove('active'));
+  document.querySelector(`[onclick="selectShipping('${method}')"]`).classList.add('active');
+  document.querySelectorAll('input[name="shipping"]').forEach(inp => inp.checked = false);
+  document.querySelector(`input[value="${method}"]`).checked = true;
+  updateTotals();
+}
+
+function selectPayment(method) {
+  paymentMethod = method;
+  document.querySelectorAll('.payment-method').forEach(opt => opt.classList.remove('active'));
+  document.querySelector(`[onclick="selectPayment('${method}')"]`).classList.add('active');
+  document.querySelectorAll('input[name="payment"]').forEach(inp => inp.checked = false);
+  document.querySelector(`input[value="${method}"]`).checked = true;
+
+  document.querySelectorAll('.payment-details').forEach(detail => detail.classList.remove('active'));
+  document.getElementById(method + 'Details').classList.add('active');
+}
+
+function processPayPal() {
+  // Simulate PayPal redirect to sandbox
+  showToast('Redirigiendo a PayPal...', '🔄');
+  setTimeout(() => {
+    // In a real implementation, this would redirect to PayPal sandbox
+    window.open('https://www.sandbox.paypal.com', '_blank');
+    showToast('Pago procesado con PayPal', '✅');
+  }, 2000);
+}
+
+function completeOrder() {
+  // Basic validation
+  const firstName = document.getElementById('firstName').value;
+  const lastName = document.getElementById('lastName').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const address = document.getElementById('address').value;
+
+  if (!firstName || !lastName || !email || !phone || !address) {
+    showToast('Por favor, completa toda la información de contacto', '❌');
+    return;
+  }
+
+  if (cart.length === 0) {
+    showToast('Tu carrito está vacío', '❌');
+    return;
+  }
+
+  // Payment validation based on method
+  if (paymentMethod === 'card') {
+    const cardNumber = document.getElementById('cardNumber').value;
+    const cardExpiry = document.getElementById('cardExpiry').value;
+    const cardName = document.getElementById('cardName').value;
+    const cardCVV = document.getElementById('cardCVV').value;
+
+    if (!cardNumber || !cardExpiry || !cardName || !cardCVV) {
+      showToast('Por favor, completa los datos de la tarjeta', '❌');
+      return;
+    }
+  } else if (paymentMethod === 'bizum') {
+    const bizumPhone = document.getElementById('bizumPhone').value;
+    if (!bizumPhone) {
+      showToast('Por favor, introduce tu número de teléfono para Bizum', '❌');
+      return;
+    }
+  }
+
+  // Simulate order completion
+  showToast('Procesando pedido...', '🔄');
+
+  setTimeout(() => {
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const shippingCost = shippingMethod === 'express' ? 15 : 0;
+    const total = subtotal + shippingCost;
+
+    const orderItems = cart.map(item => ({ name: item.name, qty: item.qty, price: item.price }));
+    const orders = JSON.parse(localStorage.getItem('techcore_orders') || '[]');
+    orders.push({
+      id: `TCH-${Date.now()}`,
+      date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }),
+      status: 'Completado',
+      items: orderItems,
+      total
+    });
+    localStorage.setItem('techcore_orders', JSON.stringify(orders));
+
+    // Clear cart
+    cart = [];
+    localStorage.removeItem('techcore_cart');
+    localStorage.removeItem('techcore_cart_discount');
+
+    showToast('¡Pedido completado con éxito!', '✅');
+
+    // Redirect to confirmation page (in real app)
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 2000);
+  }, 2000);
+}
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg, icon='✅') {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastIcon').textContent = icon;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function loadUserData() {
+  const user = JSON.parse(localStorage.getItem('techcoreUser') || 'null');
+  if (!user) return;
+  document.getElementById('firstName').value = user.firstName || '';
+  document.getElementById('lastName').value = user.lastName || '';
+  document.getElementById('email').value = user.email || '';
+  document.getElementById('phone').value = user.phone || '';
+  document.getElementById('address').value = user.address || '';
+}
+
+// Initialize
+loadCart();
+loadUserData();
+</script>
+  <script src="header.js"></script>
+</body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Cuenta — TechCore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="header.css">
+<style>
+  :root {
+    --black: #080810;
+    --black2: #0f0f1a;
+    --black3: #16162b;
+    --purple: #7c3aed;
+    --purple-light: #9d5af0;
+    --purple-glow: #a855f7;
+    --purple-dim: #4c1d95;
+    --white: #f4f4ff;
+    --white-dim: #c8c8e0;
+    --gray: #2a2a3f;
+    --gray2: #1e1e32;
+    --accent: #e040fb;
+    --green: #10b981;
+    --red: #ef4444;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius: 12px;
+    --shadow: 0 0 40px rgba(124,58,237,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--black2); }
+  ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(8,8,16,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(124,58,237,0.2);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo .logo-core { color: var(--purple-glow); }
+
+  .nav-links {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    gap: 4px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--white-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); background: var(--gray); }
+
+  .nav-actions {
+    display: flex;
+    gap: 12px;
+  }
+  .nav-btn {
+    background: var(--purple);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .nav-btn:hover { background: var(--purple-light); }
+
+  .main-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+  }
+
+  .sidebar {
+    background: var(--black2);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius);
+    padding: 24px;
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+  }
+
+  .user-avatar {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, var(--purple), var(--accent));
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  .user-name {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .user-email {
+    font-size: 12px;
+    color: var(--white-dim);
+    margin-bottom: 20px;
+  }
+
+  .menu-section {
+    margin-bottom: 24px;
+  }
+  .menu-section h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--purple-glow);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .menu-item {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: var(--white-dim);
+    text-decoration: none;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+  .menu-item:hover { background: var(--gray); color: var(--white); }
+  .menu-item.active { background: var(--purple-dim); color: var(--purple-glow); }
+
+  .logout-btn {
+    width: 100%;
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .logout-btn:hover { background: #dc2626; }
+
+  .content {
+    background: var(--black2);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius);
+    padding: 32px;
+  }
+
+  .content h1 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 24px;
+  }
+
+  .section {
+    margin-bottom: 40px;
+  }
+  .section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--purple-glow);
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    color: var(--white-dim);
+    margin-bottom: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    color: var(--white);
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 14px;
+  }
+  .form-group input:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 0 2px rgba(124,58,237,0.15);
+  }
+
+  .button-group {
+    display: flex;
+    gap: 12px;
+  }
+  .btn-primary {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--purple-light); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--white-dim);
+    border: 1px solid var(--gray);
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--white); color: var(--white); }
+
+  .order-card {
+    background: var(--black3);
+    border: 1px solid var(--gray);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .order-id {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--purple-glow);
+  }
+  .order-date {
+    font-size: 12px;
+    color: var(--white-dim);
+  }
+  .order-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .status-delivered { background: rgba(16, 185, 129, 0.15); color: var(--green); }
+  .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+
+  .order-items {
+    font-size: 13px;
+    color: var(--white-dim);
+    margin-bottom: 12px;
+  }
+  .order-total {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--white-dim);
+  }
+  .empty-state p { font-size: 16px; margin-bottom: 20px; }
+  .empty-state a {
+    display: inline-block;
+    background: var(--purple);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .main-container { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<div id="site-header"></div>
+
+
+
+<!-- MAIN CONTAINER -->
+<div class="main-container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="user-avatar">👤</div>
+    <div class="user-name" id="userNameDisplay">Usuario</div>
+    <div class="user-email" id="userEmailDisplay">usuario@techcore.com</div>
+
+    <div class="menu-section">
+      <h4>Cuenta</h4>
+      <button class="menu-item active" onclick="showSection('profile')">Perfil</button>
+      <button class="menu-item" onclick="showSection('address')">Datos personales</button>
+      <button class="menu-item" onclick="showSection('payment')">Métodos de pago</button>
+      <button class="menu-item" onclick="showSection('security')">Seguridad</button>
+    </div>
+
+    <div class="menu-section">
+      <h4>Mis compras</h4>
+      <button class="menu-item" onclick="showSection('orders')">Historial de pedidos</button>
+      <button class="menu-item" onclick="showSection('addresses')">Direcciones guardadas</button>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- PROFILE SECTION -->
+    <div id="profileSection" class="section" style="display: block;">
+      <h1>Mi Perfil</h1>
+      <div style="background: var(--black3); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--gray);">
+        <h2>Información de Cuenta</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label>Nombre Completo</label>
+            <input type="text" id="profileName" placeholder="Tu nombre">
+          </div>
+          <div class="form-group">
+            <label>Correo Electrónico</label>
+            <input type="email" id="profileEmail" placeholder="tu@email.com">
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" id="profilePhone" placeholder="+34 600 000 000">
+          </div>
+          <div class="form-group">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" id="profileBirthday">
+          </div>
+        </div>
+        <div class="button-group">
+          <button class="btn-primary" onclick="saveProfile()">Guardar cambios</button>
+          <button class="btn-secondary" onclick="resetProfile()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADDRESS SECTION -->
+    <div id="addressSection" class="section" style="display: none;">
+      <h1>Datos Personales</h1>
+      <div style="background: var(--black3); padding: 20px; border-radius: 12px; border: 1px solid var(--gray);">
+        <h2>Dirección de Envío Principal</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label>Calle y número</label>
+            <input type="text" id="addressStreet" placeholder="Calle Principal, 123">
+          </div>
+          <div class="form-group">
+            <label>Código Postal</label>
+            <input type="text" id="addressZip" placeholder="28001">
+          </div>
+          <div class="form-group">
+            <label>Ciudad</label>
+            <input type="text" id="addressCity" placeholder="Madrid">
+          </div>
+          <div class="form-group">
+            <label>Comunidad Autónoma</label>
+            <select id="addressRegion">
+              <option>Seleccionar...</option>
+              <option>Madrid</option>
+              <option>Barcelona</option>
+              <option>Valencia</option>
+              <option>Andalucía</option>
+              <option>Cataluña</option>
+            </select>
+          </div>
+        </div>
+        <div class="button-group">
+          <button class="btn-primary" onclick="saveAddress()">Guardar dirección</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT SECTION -->
+    <div id="paymentSection" class="section" style="display: none;">
+      <h1>Métodos de Pago</h1>
+      <div id="paymentMethods">
+        <div style="background: var(--black3); padding: 20px; border-radius: 12px; border: 1px solid var(--gray); margin-bottom: 16px;">
+          <h3>Tarjeta de Crédito/Débito</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label>Número de Tarjeta</label>
+              <input type="text" placeholder="•••• •••• •••• 1234" maxlength="19">
+            </div>
+            <div class="form-group">
+              <label>Titular</label>
+              <input type="text" placeholder="Nombre del titular">
+            </div>
+            <div class="form-group">
+              <label>Fecha de Vencimiento</label>
+              <input type="text" placeholder="MM/YY">
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" placeholder="•••" maxlength="3">
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="savePayment()">Guardar método de pago</button>
+      </div>
+    </div>
+
+    <!-- SECURITY SECTION -->
+    <div id="securitySection" class="section" style="display: none;">
+      <h1>Seguridad</h1>
+      <div style="background: var(--black3); padding: 20px; border-radius: 12px; border: 1px solid var(--gray); margin-bottom: 20px;">
+        <h2>Cambiar Contraseña</h2>
+        <div style="max-width: 400px;">
+          <div class="form-group">
+            <label>Contraseña Actual</label>
+            <input type="password" id="currentPassword" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label>Nueva Contraseña</label>
+            <input type="password" id="newPassword" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label>Confirmar Contraseña</label>
+            <input type="password" id="confirmPassword" placeholder="••••••••">
+          </div>
+          <button class="btn-primary" onclick="changePassword()">Cambiar contraseña</button>
+        </div>
+      </div>
+      <div style="background: var(--black3); padding: 20px; border-radius: 12px; border: 1px solid var(--gray);">
+        <h2 style="margin-bottom: 12px;">Sesiones Activas</h2>
+        <p style="font-size: 13px; color: var(--white-dim); margin-bottom: 16px;">Sesión actual: esta navegador</p>
+        <button class="btn-secondary" onclick="logoutAllDevices()">Cerrar sesiones en otros dispositivos</button>
+      </div>
+    </div>
+
+    <!-- ORDERS SECTION -->
+    <div id="ordersSection" class="section" style="display: none;">
+      <h1>Historial de Pedidos</h1>
+      <div id="ordersList"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+// Initialize user data from localStorage
+function initUser() {
+  const isAuth = localStorage.getItem('techcoreAuth');
+  if (!isAuth) {
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  const user = JSON.parse(localStorage.getItem('techcoreUser'));
+  if (!user) {
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  document.getElementById('userNameDisplay').textContent = user.name;
+  document.getElementById('userEmailDisplay').textContent = user.email;
+  document.getElementById('profileName').value = user.name;
+  document.getElementById('profileEmail').value = user.email;
+  document.getElementById('profilePhone').value = user.phone || '';
+}
+
+function showSection(sectionName) {
+  // Hide all sections
+  document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+  
+  // Show selected section
+  const sectionMap = {
+    'profile': 'profileSection',
+    'address': 'addressSection',
+    'payment': 'paymentSection',
+    'security': 'securitySection',
+    'orders': 'ordersSection'
+  };
+  
+  if (sectionMap[sectionName]) {
+    document.getElementById(sectionMap[sectionName]).style.display = 'block';
+  }
+  
+  // Mark button as active
+  event.target.classList.add('active');
+}
+
+function saveProfile() {
+  const user = {
+    name: document.getElementById('profileName').value,
+    email: document.getElementById('profileEmail').value,
+    phone: document.getElementById('profilePhone').value
+  };
+  localStorage.setItem('techcoreUser', JSON.stringify(user));
+  alert('✅ Perfil actualizado correctamente');
+  initUser();
+}
+
+function resetProfile() {
+  initUser();
+}
+
+function saveAddress() {
+  const address = {
+    street: document.getElementById('addressStreet').value,
+    zip: document.getElementById('addressZip').value,
+    city: document.getElementById('addressCity').value,
+    region: document.getElementById('addressRegion').value
+  };
+  localStorage.setItem('techcoreAddress', JSON.stringify(address));
+  alert('✅ Dirección guardada correctamente');
+}
+
+function savePayment() {
+  alert('✅ Método de pago guardado correctamente');
+}
+
+function changePassword() {
+  const current = document.getElementById('currentPassword').value;
+  const newPass = document.getElementById('newPassword').value;
+  const confirm = document.getElementById('confirmPassword').value;
+  
+  if (!current || !newPass || !confirm) {
+    alert('⚠️ Por favor completa todos los campos');
+    return;
+  }
+  
+  if (newPass !== confirm) {
+    alert('⚠️ Las contraseñas no coinciden');
+    return;
+  }
+  
+  alert('✅ Contraseña cambiada correctamente');
+  document.getElementById('currentPassword').value = '';
+  document.getElementById('newPassword').value = '';
+  document.getElementById('confirmPassword').value = '';
+}
+
+function logoutAllDevices() {
+  alert('✅ Se ha cerrado sesión en otros dispositivos');
+}
+
+function logout() {
+  if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+    localStorage.removeItem('techcoreUser');
+    localStorage.removeItem('techcoreAuth');
+    window.location.href = 'login.html';
+  }
+}
+
+function getOrders() {
+  const orders = JSON.parse(localStorage.getItem('techcore_orders') || '[]');
+  return Array.isArray(orders) ? orders : [];
+}
+
+function saveOrders(orders) {
+  localStorage.setItem('techcore_orders', JSON.stringify(orders));
+}
+
+function renderOrders() {
+  const orders = getOrders();
+  const list = document.getElementById('ordersList');
+  if (!list) return;
+
+  if (orders.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <p>No tienes pedidos todavía.</p>
+        <a href="index.html">Ver productos</a>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = orders.map(order => {
+    const itemsText = order.items.map(item => `${item.name}${item.qty > 1 ? ` (x${item.qty})` : ''}`).join(', ');
+    const statusClass = order.status === 'Completado' ? 'status-delivered' : 'status-pending';
+    return `
+      <div class="order-card">
+        <div class="order-header">
+          <span class="order-id">${order.id}</span>
+          <span class="order-date">${order.date}</span>
+          <span class="order-status ${statusClass}">${order.status}</span>
+        </div>
+        <div class="order-items">
+          <strong>Productos:</strong> ${itemsText}
+        </div>
+        <div class="order-total">Total: ${order.total.toLocaleString('es-ES')}€</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Initialize on page load
+window.addEventListener('load', () => {
+  initUser();
+  renderOrders();
+});
+</script>
+
+  <script src="header.js"></script>
+</body>
+</html>

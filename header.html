@@ -1,0 +1,83 @@
+<div class="promo-bar">
+  ⚡ Usa el código <span>DESCUENTO15</span> en tu pedido y obtén un <span>15% de descuento</span> en toda la tienda · Envío gratis en pedidos +100€ · Garantía 2 años
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="logo-icon">⚙</span>
+    Tech<span class="logo-core">Core</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li class="nav-dropdown">
+      <a href="#">Categorías</a>
+      <ul class="dropdown-menu">
+        <li><a href="categorias.html?cat=laptop">Portátiles</a></li>
+        <li><a href="categorias.html?cat=desktop">Torres de escritorio</a></li>
+        <li><a href="categorias.html?cat=monitor">Monitores</a></li>
+        <li><a href="categorias.html?cat=audio">Audio & Micrófonos</a></li>
+        <li><a href="componentes.html">Componentes</a></li>
+      </ul>
+    </li>
+    <li class="nav-dropdown">
+      <a href="componentes.html">Componentes</a>
+      <ul class="dropdown-menu">
+        <li><a href="componentes.html#motherboards">Placa base</a></li>
+        <li><a href="componentes.html#gpus">Tarjeta gráfica</a></li>
+        <li><a href="componentes.html#cpus">Procesador</a></li>
+        <li><a href="componentes.html#ram">Memoria RAM</a></li>
+        <li><a href="componentes.html#storage">Almacenamiento</a></li>
+        <li><a href="componentes.html#psu">Fuente alimentación</a></li>
+        <li><a href="componentes.html#cases">Caja / Torre</a></li>
+      </ul>
+    </li>
+    <li><a href="configurador.html">Configurador</a></li>
+
+  <div class="nav-actions">
+    <button class="user-btn" onclick="window.location.href='usuario.html'" title="Mi cuenta">👤</button>
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Buscar productos…">
+    </div>
+    <button class="mobile-menu-btn" type="button">☰</button>
+    <button class="cart-btn" id="cartBtn" onclick="toggleCart()">
+      🛒
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartOnBg(event)">
+  <div class="cart-panel">
+    <div class="cart-head">
+      <h3>🛒 Tu carrito</h3>
+      <button class="cart-close" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <div class="empty-icon">🛒</div>
+        <p>Tu carrito está vacío</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-coupon">
+        <input type="text" id="cartCoupon" placeholder="Código descuento…" maxlength="12">
+        <button onclick="applyCartDiscount()">Aplicar</button>
+      </div>
+      <div class="cart-discount-msg" id="cartDiscountMsg">✅ DESCUENTO15 aplicado (−15%)</div>
+      <div class="cart-total">
+        <span class="cart-total-label">Total</span>
+        <span class="cart-total-val" id="cartTotal">0€</span>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Finalizar compra →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span id="toastMsg">Producto añadido</span>
+</div>
